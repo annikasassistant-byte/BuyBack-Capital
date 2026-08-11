@@ -1,15 +1,19 @@
 import Link from "next/link";
+import { defaultBuybackContent } from "@/lib/cms/defaults";
+import type { BrandContent } from "@/lib/cms/types";
 
 type BrandMarkProps = {
   href?: string;
   light?: boolean;
   size?: "sm" | "md";
+  brand?: Pick<BrandContent, "monogram" | "namePrimary" | "nameAccent">;
 };
 
 export function BrandMark({
   href = "/",
   light = false,
   size = "md",
+  brand = defaultBuybackContent.site.brand,
 }: BrandMarkProps) {
   return (
     <Link
@@ -27,12 +31,12 @@ export function BrandMark({
             : "bg-primary text-primary-foreground"
         }`}
       >
-        BB
+        {brand.monogram}
       </span>
       <span>
-        BuyBack{" "}
+        {brand.namePrimary}{" "}
         <span className={light ? "text-primary-foreground/85" : "text-primary"}>
-          Capital
+          {brand.nameAccent}
         </span>
       </span>
     </Link>

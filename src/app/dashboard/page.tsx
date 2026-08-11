@@ -1,27 +1,34 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { BrandMark } from "@/components/BrandMark";
 import { DashboardShareCard } from "@/components/dashboard/DashboardShareCard";
 import { SectionLabel } from "@/components/SectionLabel";
+import { getBuybackCmsContent } from "@/lib/cms/fetch";
 
-const stats = [
-  { label: "Financing Fee", value: "12,5 %" },
-  { label: "Laufzeit", value: "12–24 Monate" },
-  { label: "Mindestanlage", value: "ab 50.000 €" },
-  { label: "Runde", value: "max. 20 Investoren" },
-];
+export async function generateMetadata(): Promise<Metadata> {
+  const content = await getBuybackCmsContent();
+  const meta = content.site.metadata.dashboard;
+  return {
+    title: meta.title,
+    description: meta.description,
+  };
+}
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const content = await getBuybackCmsContent();
+  const { dashboard, site } = content;
+
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b border-border bg-card">
         <div className="container flex items-center justify-between py-4">
-          <BrandMark href="/dashboard" />
+          <BrandMark href="/dashboard" brand={site.brand} />
           <nav className="flex items-center gap-3">
             <Link
-              href="/"
+              href={dashboard.navHref}
               className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
             >
-              Landing Page
+              {dashboard.navLabel}
             </Link>
           </nav>
         </div>
@@ -29,20 +36,22 @@ export default function DashboardPage() {
 
       <main className="container py-12 md:py-16">
         <div className="mb-10 max-w-3xl">
-          <SectionLabel>Investor Area</SectionLabel>
+          <SectionLabel>{dashboard.introLabel}</SectionLabel>
           <h1 className="text-4xl font-bold text-foreground md:text-5xl">
-            BuyBack Capital Dashboard
+            {dashboard.introTitle}
           </h1>
           <p className="mt-4 text-lg text-muted-foreground">
-            Übersicht für bestehende und interessierte Private-Debt-Investoren.
-            Zum Weiterleiten bitte die öffentliche Landing Page verwenden.
+            {dashboard.introBody}
           </p>
         </div>
 
-        <DashboardShareCard />
+        <DashboardShareCard
+          content={dashboard.shareCard}
+          share={site.share}
+        />
 
         <section className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {stats.map((stat) => (
+          {dashboard.stats.map((stat) => (
             <div
               key={stat.label}
               className="rounded-2xl border border-border bg-card p-8 transition-shadow hover:shadow-lg"
@@ -58,36 +67,35 @@ export default function DashboardPage() {
         <section className="mt-8 grid gap-6 md:grid-cols-2">
           <div className="rounded-2xl bg-primary p-8">
             <h2 className="mb-3 text-xl font-bold text-primary-foreground">
-              Nächste Schritte
+              {dashboard.nextStepsTitle}
             </h2>
             <ul className="space-y-2 text-sm text-primary-foreground/70">
-              <li>• Landing Page an Interessenten weiterleiten</li>
-              <li>• Persönliches Gespräch über WhatsApp vereinbaren</li>
-              <li>• Konditionen und Sicherheiten auf der Pitch-Seite prüfen</li>
+              {dashboard.nextSteps.map((step) => (
+                <li key={step}>• {step}</li>
+              ))}
             </ul>
           </div>
           <div className="rounded-2xl border border-border bg-card p-8">
             <h2 className="mb-3 text-xl font-bold text-foreground">
-              Schnellzugriff
+              {dashboard.quickAccessTitle}
             </h2>
             <p className="mb-6 text-sm text-muted-foreground">
-              Die öffentliche Landing Page ist der empfohlene Link für alle
-              Weiterempfehlungen.
+              {dashboard.quickAccessBody}
             </p>
             <div className="flex flex-wrap gap-3">
               <Link
-                href="/"
+                href={dashboard.primaryCtaHref}
                 className="rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
               >
-                Öffentliche Landing Page
+                {dashboard.primaryCtaLabel}
               </Link>
               <a
-                href="https://wa.me/491732142293"
+                href={site.contact.whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="rounded-full border border-border bg-background px-5 py-3 text-sm font-semibold text-foreground transition hover:bg-muted"
               >
-                Kontakt aufnehmen
+                {dashboard.secondaryCtaLabel}
               </a>
             </div>
           </div>

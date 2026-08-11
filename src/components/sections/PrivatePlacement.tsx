@@ -1,26 +1,15 @@
 import { Lock } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
+import { defaultBuybackContent } from "@/lib/cms/defaults";
+import type { PrivatePlacementContent } from "@/lib/cms/types";
 
-const items = [
-  {
-    value: "2,5 Mio €",
-    desc: "Gesamtvolumen der Runde",
-  },
-  {
-    value: "Max. 20 Investoren",
-    desc: "Ausgewählter Kreis, persönliche Betreuung",
-  },
-  {
-    value: "Schnelle Abwicklung",
-    desc: "Keine bürokratischen Hürden",
-  },
-  {
-    value: "Nicht öffentlich",
-    desc: "Early Access für ausgewählte Personen",
-  },
-];
+type PrivatePlacementProps = {
+  content?: PrivatePlacementContent;
+};
 
-export function PrivatePlacement() {
+export function PrivatePlacement({
+  content = defaultBuybackContent.landing.privatePlacement,
+}: PrivatePlacementProps) {
   return (
     <section className="bg-background py-24">
       <div className="container mx-auto">
@@ -32,21 +21,22 @@ export function PrivatePlacement() {
               </div>
             </div>
             <h2 className="mb-6 text-4xl font-bold text-foreground md:text-5xl">
-              Exklusive Privatplatzierung
+              {content.title}
             </h2>
             <p className="mb-12 text-lg text-muted-foreground">
-              Bei BuyBack Capital ist uns eine langfristige und persönliche
-              Partnerschaft wichtig. Deshalb richten wir diese Runde an einen
-              ausgewählten Kreis von{" "}
+              {content.introBefore}{" "}
               <strong className="text-foreground">
-                maximal 20 Privatpersonen
+                {content.introHighlight1}
               </strong>{" "}
-              mit einem Gesamtvolumen von{" "}
-              <strong className="text-foreground">2,5 Mio €</strong>.
+              {content.introMiddle}{" "}
+              <strong className="text-foreground">
+                {content.introHighlight2}
+              </strong>
+              {content.introAfter}
             </p>
 
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-              {items.map((item, i) => (
+              {content.items.map((item, i) => (
                 <Reveal key={item.value} delay={i * 0.05}>
                   <div className="h-full rounded-2xl bg-secondary p-6">
                     <p className="text-xl font-bold text-secondary-foreground">
@@ -61,8 +51,7 @@ export function PrivatePlacement() {
             </div>
 
             <p className="mt-12 text-sm text-muted-foreground">
-              Schlankes Team, volle Konzentration auf das operative Geschäft —
-              ohne aufgeblähte Strukturen oder unnötige Fixkosten.
+              {content.footerNote}
             </p>
           </div>
         </Reveal>

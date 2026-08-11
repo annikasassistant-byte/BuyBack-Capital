@@ -1,54 +1,30 @@
 import Image from "next/image";
 import { Reveal } from "@/components/Reveal";
 import { SectionLabel } from "@/components/SectionLabel";
+import { defaultBuybackContent } from "@/lib/cms/defaults";
+import type { BusinessModelContent } from "@/lib/cms/types";
 
-const points = [
-  {
-    title: "Keine Lieferantenabhängigkeit",
-    desc: "Bessere Einkaufspreise",
-  },
-  {
-    title: "Jeder Einkauf validiert",
-    desc: "Minimiertes Risiko",
-  },
-  {
-    title: "Ø ~45 Tage Umschlag",
-    desc: "Kapital arbeitet effizient",
-  },
-  {
-    title: "Sofortige Nachfrage",
-    desc: "Kein Marketing nötig",
-  },
-];
+type BusinessModelProps = {
+  content?: BusinessModelContent;
+};
 
-const revenue = [
-  { year: "2023", value: "1,072 Mio €", height: "28%" },
-  { year: "2024", value: "2,38 Mio €", height: "55%" },
-  { year: "2025", value: "3,89 Mio €", height: "90%" },
-];
-
-const partners = [
-  { name: "Amazon / YouLend", src: "/images/logo-amazon.png" },
-  { name: "Fulfin", src: "/images/logo-fulfin.png" },
-  { name: "Tupel", src: "/images/logo-tupel.png" },
-  { name: "VR Bank", src: "/images/logo-vrbank.png" },
-];
-
-export function BusinessModel() {
+export function BusinessModel({
+  content = defaultBuybackContent.landing.businessModel,
+}: BusinessModelProps) {
   return (
     <section className="bg-muted py-24">
       <div className="container mx-auto">
         <Reveal>
           <div className="mb-16 text-center">
-            <SectionLabel>Geschäftsmodell</SectionLabel>
+            <SectionLabel>{content.label}</SectionLabel>
             <h2 className="text-4xl font-bold text-foreground md:text-5xl">
-              Warum dieses Modell funktioniert
+              {content.title}
             </h2>
           </div>
         </Reveal>
 
         <div className="mb-12 grid gap-4 md:grid-cols-2">
-          {points.map((point, i) => (
+          {content.points.map((point, i) => (
             <Reveal key={point.title} delay={i * 0.04}>
               <div className="rounded-xl bg-primary p-8 text-center">
                 <p className="text-lg font-bold text-primary-foreground">
@@ -63,18 +39,18 @@ export function BusinessModel() {
         </div>
 
         <p className="mb-16 text-center text-lg font-semibold text-primary">
-          Kapital wird effizient, schnell und risikooptimiert eingesetzt
+          {content.tagline}
         </p>
 
         <div className="grid items-start gap-12 md:grid-cols-2">
           <Reveal>
             <div>
               <h3 className="mb-6 text-2xl font-bold text-foreground">
-                Umsatzentwicklung
+                {content.revenueHeading}
               </h3>
               <div className="rounded-2xl border border-border bg-card p-6">
                 <div className="flex h-56 items-end gap-6">
-                  {revenue.map((item) => (
+                  {content.revenueBars.map((item) => (
                     <div
                       key={item.year}
                       className="flex h-full flex-1 flex-col items-center justify-end gap-2"
@@ -93,7 +69,7 @@ export function BusinessModel() {
                   ))}
                 </div>
                 <p className="mt-6 text-sm font-medium text-muted-foreground">
-                  Gesamt: 7,34 Mio €
+                  {content.revenueTotalLabel}
                 </p>
               </div>
             </div>
@@ -102,13 +78,13 @@ export function BusinessModel() {
           <Reveal delay={0.08}>
             <div>
               <h3 className="mb-2 text-2xl font-bold text-foreground">
-                Finanzierungspartner
+                {content.partnersHeading}
               </h3>
               <p className="mb-6 text-muted-foreground">
-                Diese Partner vertrauten uns bereits
+                {content.partnersSubtitle}
               </p>
               <div className="space-y-3">
-                {partners.map((partner) => (
+                {content.partners.map((partner) => (
                   <div
                     key={partner.name}
                     className="flex items-center gap-4 rounded-lg border border-border bg-card p-4"

@@ -5,12 +5,23 @@ import { useState } from "react";
 import { Check, Copy, ExternalLink, Share2 } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { SectionLabel } from "@/components/SectionLabel";
+import { defaultBuybackContent } from "@/lib/cms/defaults";
+import type { ShareLandingContent, ShareMetaContent } from "@/lib/cms/types";
 
-export function ShareLandingSection() {
+type ShareLandingSectionProps = {
+  content?: ShareLandingContent;
+  share?: ShareMetaContent;
+};
+
+export function ShareLandingSection({
+  content = defaultBuybackContent.landing.share,
+  share = defaultBuybackContent.site.share,
+}: ShareLandingSectionProps) {
   const [copied, setCopied] = useState(false);
 
   function getUrl() {
-    return typeof window !== "undefined" ? `${window.location.origin}/` : "/";
+    if (typeof window === "undefined") return share.path || "/";
+    return `${window.location.origin}${share.path || "/"}`;
   }
 
   async function copyLink() {
@@ -29,8 +40,8 @@ export function ShareLandingSection() {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: "BuyBack Capital",
-          text: "BuyBack Capital – Working Capital Financing (Private Debt)",
+          title: share.title,
+          text: share.text,
           url,
         });
         return;
@@ -48,15 +59,11 @@ export function ShareLandingSection() {
           <div className="overflow-hidden rounded-2xl border border-border bg-card">
             <div className="grid lg:grid-cols-2">
               <div className="p-8 md:p-10">
-                <SectionLabel>Weiterempfehlen</SectionLabel>
+                <SectionLabel>{content.label}</SectionLabel>
                 <h2 className="mb-4 text-3xl font-bold text-foreground md:text-4xl">
-                  Landing Page teilen
+                  {content.title}
                 </h2>
-                <p className="max-w-xl text-muted-foreground">
-                  Wenn du BuyBack Capital an jemanden weitergeben möchtest,
-                  teile bitte diese Landing Page — nicht das Investor-Dashboard.
-                  So bleibt der Einstieg klar und einfach weiterleitbar.
-                </p>
+                <p className="max-w-xl text-muted-foreground">{content.body}</p>
 
                 <div className="mt-8 flex flex-wrap gap-3">
                   <button
@@ -65,7 +72,7 @@ export function ShareLandingSection() {
                     className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
                   >
                     <Share2 className="h-4 w-4" />
-                    Landing Page teilen
+                    {content.shareButton}
                   </button>
                   <button
                     type="button"
@@ -77,28 +84,27 @@ export function ShareLandingSection() {
                     ) : (
                       <Copy className="h-4 w-4" />
                     )}
-                    {copied ? "Link kopiert" : "Link kopieren"}
+                    {copied ? content.copiedButton : content.copyButton}
                   </button>
                   <Link
-                    href="/"
+                    href={share.path || "/"}
                     className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-5 py-3 text-sm font-semibold text-foreground transition hover:bg-muted"
                   >
                     <ExternalLink className="h-4 w-4" />
-                    Öffnen
+                    {content.openButton}
                   </Link>
                 </div>
               </div>
 
               <div className="flex flex-col justify-center bg-primary p-8 text-primary-foreground md:p-10">
                 <p className="text-xs font-medium uppercase tracking-widest text-primary-foreground/60">
-                  BuyBack Capital
+                  {content.panelEyebrow}
                 </p>
                 <p className="mt-4 text-2xl font-bold leading-snug md:text-3xl">
-                  Der richtige Link für Interessenten.
+                  {content.panelTitle}
                 </p>
                 <p className="mt-4 text-sm leading-relaxed text-primary-foreground/70">
-                  Öffentliche Pitch-Seite mit Konditionen, Sicherheitsstruktur
-                  und Kontakt — ideal zum Weiterleiten.
+                  {content.panelBody}
                 </p>
               </div>
             </div>

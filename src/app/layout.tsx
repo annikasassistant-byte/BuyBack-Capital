@@ -16,11 +16,11 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   title: "BuyBack Capital – Working Capital Investment",
   description:
-    "BuyBack Capital: Exklusive Privatplatzierung für Working Capital Financing im Re-Commerce mit 12,5% Financing Fee, besichert durch Warenbestand.",
+    "Exklusive Private-Debt-Runde für Working-Capital-Finanzierung im Re-Commerce.",
   openGraph: {
     title: "BuyBack Capital – Working Capital Investment",
     description:
-      "BuyBack Capital: Exklusive Privatplatzierung für Working Capital Financing im Re-Commerce mit 12,5% Financing Fee, besichert durch Warenbestand.",
+      "Exklusive Private-Debt-Runde für Working-Capital-Finanzierung im Re-Commerce.",
     type: "website",
   },
 };

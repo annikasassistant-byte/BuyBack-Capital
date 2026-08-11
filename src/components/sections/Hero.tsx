@@ -1,12 +1,12 @@
 import { ChevronDown } from "lucide-react";
+import { defaultBuybackContent } from "@/lib/cms/defaults";
+import type { HeroContent } from "@/lib/cms/types";
 
-const offers = [
-  { value: "12,5 %", label: "Financing Fee" },
-  { value: "12–24", label: "Monate Laufzeit" },
-  { value: "ab 50.000 €", label: "Mindestanlage" },
-];
+type HeroProps = {
+  content?: HeroContent;
+};
 
-export function Hero() {
+export function Hero({ content = defaultBuybackContent.landing.hero }: HeroProps) {
   return (
     <section className="relative flex min-h-screen items-center overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/90 to-primary/70" />
@@ -16,34 +16,34 @@ export function Hero() {
       <div className="container relative z-10 mx-auto py-20 pt-28">
         <div className="max-w-3xl">
           <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary-foreground">
-            BuyBack Capital
+            {content.eyebrow}
           </p>
           <p className="mb-6 text-sm font-medium uppercase tracking-widest text-primary-foreground/70">
-            Private Debt · Exklusive Runde · Max. 20 Investoren
+            {content.kicker}
           </p>
 
           <h1 className="mb-6 text-5xl font-bold leading-tight text-primary-foreground md:text-7xl">
-            Working Capital
+            {content.headlineLine1}
             <br />
-            <span className="text-primary-foreground/80">Financing</span>
+            <span className="text-primary-foreground/80">
+              {content.headlineLine2}
+            </span>
           </h1>
 
           <p className="mb-4 text-xl font-light text-primary-foreground/80 md:text-2xl">
-            Re-Commerce &amp; EOL Goods
+            {content.subheadline}
           </p>
 
           <p className="mb-12 max-w-xl text-lg text-primary-foreground/60">
-            Als Private-Debt-Investor stellst du BuyBack Capital Kapital für
-            unseren Wareneinkauf zur Verfügung — besichert, mit Financing Fee
-            und planbarer Rückzahlung.
+            {content.body}
           </p>
 
           <div>
             <p className="mb-4 text-xs font-medium uppercase tracking-widest text-primary-foreground/50">
-              Dein Angebot
+              {content.offersHeading}
             </p>
             <div className="flex flex-wrap gap-10 text-primary-foreground">
-              {offers.map((item) => (
+              {content.offers.map((item) => (
                 <div key={item.label}>
                   <p className="text-4xl font-bold">{item.value}</p>
                   <p className="mt-1 text-sm text-primary-foreground/70">
@@ -58,8 +58,8 @@ export function Hero() {
 
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
         <a
-          href="#how-it-works"
-          aria-label="Weiter scrollen"
+          href={content.scrollHref}
+          aria-label={content.scrollAriaLabel}
           className="text-primary-foreground/70 transition hover:text-primary-foreground"
         >
           <ChevronDown className="h-7 w-7 animate-bounce" />
