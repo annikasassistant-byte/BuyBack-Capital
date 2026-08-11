@@ -9,6 +9,14 @@ type BrandMarkProps = {
   brand?: Pick<BrandContent, "monogram" | "namePrimary" | "nameAccent">;
 };
 
+
+
+
+
+
+
+
+
 export function BrandMark({
   href = "/",
   light = false,
